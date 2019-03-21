@@ -65,3 +65,30 @@ div.form-group {
   display: flex;
   align-items: center;
 }
+#add-quote-frm {
+  margin-top: 3em;
+  padding-left: 2em;
+}
+
+#add-quote-frm > div {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  width: 34em;
+  background-color: gainsboro;
+  border: 1px solid lightgrey;
+  padding: 0.3em 1em;
+}
+
+#add-quote-frm .form-group {
+  flex-grow: 3;
+}
+
+.quote-update-frm {
+  visibility: hidden;
+}
+
+.edit-quote {
+  margin-left: 2em;
+  width: 20em;
+}
