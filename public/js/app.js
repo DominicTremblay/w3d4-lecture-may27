@@ -1,3 +1,4 @@
+// Reusable Ajax request
 const request = (options, cb) => {
   $.ajax(options)
     .done(response => cb(response))
@@ -5,6 +6,7 @@ const request = (options, cb) => {
     .always(() => console.log('Request completed.'));
 };
 
+// Creating one quote element with ES6 string templating
 const createQuote = quoteObj => {
   console.log(quoteObj);
   return `<div class="card">
@@ -32,12 +34,14 @@ const createQuote = quoteObj => {
 </div>`;
 };
 
+// Loop through the array of quotes and add each element to the page
 const renderQuotes = quotes => {
   $.each(quotes, (index, quote) => {
     $('#quote-list').prepend(createQuote(quote));
   });
 };
 
+// Getting all the quotes through an ajax request and calling renderQuotes
 const loadQuotes = () => {
   const reqOptions = {
     url: '/quotes',
@@ -52,6 +56,7 @@ const loadQuotes = () => {
 };
 
 $(document).ready(function() {
+  // submit event on the form. Creating an Ajax Post request to send the data to the server
   $('#add-quote-frm').on('submit', function(event) {
     event.preventDefault();
     const quoteContent = $(this)
@@ -68,6 +73,7 @@ $(document).ready(function() {
     });
   });
 
+  // Event handler for the edit button
   $('#quote-list').on('click', '.quote-edit-frm', function(event) {
     event.preventDefault();
     const $cardHeader = $(this).closest('.card-header');
@@ -112,6 +118,7 @@ $(document).ready(function() {
     });
   });
 
+  // Event handler for the delete
   $('#quote-list').on('click', '.quote-delete-frm', function(event) {
     event.preventDefault();
 

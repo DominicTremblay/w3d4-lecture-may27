@@ -7,6 +7,8 @@ const ObjectID = require('mongodb').ObjectID;
 const port = process.env.PORT || 8000;
 const app = express();
 const MongoClient = Mongo.MongoClient;
+
+// URI to the mongoDB that we are using
 const MONGODB_URI =
   process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/movieQuotes';
 
@@ -26,6 +28,7 @@ MongoClient.connect(MONGODB_URI, (err, mongoDb) => {
   db = mongoDb;
 });
 
+// Sends back the list of quotes as json
 app.get('/quotes', (req, res) => {
   db.collection('quotes')
     .find()
@@ -37,22 +40,30 @@ app.get('/quotes', (req, res) => {
     });
 });
 
+// get a single quote
 app.get('/quotes/:id', (req, res) => {
+  // extract the id from params
   const { id } = req.params;
 
+  // find the quote with that id in the db
   db.collection('quotes')
     .findOne({ _id: ObjectID(id) })
+    // sends back the quote as json
     .then(quote => res.json(quote))
     .catch(err => res.send(err));
 });
 
 app.post('/quotes', (req, res) => {
+  // extract the content from the body of the request
   const { quoteContent } = req.body;
 
+  // save the quote in the database
   db.collection('quotes')
     .insertOne({ quote: quoteContent, comments: [] })
     .then(result => {
+      // result.ops[0]._id gets us the id that has been created in the db
       console.log(result.ops[0]._id);
+      // sending back the new quote
       res.send({
         _id: result.ops[0]._id,
         quote: quoteContent,
@@ -62,6 +73,7 @@ app.post('/quotes', (req, res) => {
     .catch(err => console.log('Error:', err));
 });
 
+// Update one quote (Edit)
 app.put('/quotes/:id', (req, res) => {
   const { quoteContent } = req.body;
   const { id } = req.params;
@@ -72,6 +84,7 @@ app.put('/quotes/:id', (req, res) => {
     .catch(err => console.log(`Error: ${err}`));
 });
 
+// Delete one quote
 app.delete('/quotes/:id', (req, res) => {
   console.log('DELETE...');
   const { id } = req.params;
